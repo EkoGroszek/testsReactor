@@ -50,4 +50,17 @@ public class WashingMachineTest {
         Assert.assertThat(laundryStatus.getErrorCode(), is(ErrorCode.TOO_HEAVY));
     }
 
+    @Test public void weightOverMaxWeightShouldSetResultAsFAILURE() {
+        LaundryBatch laundryBatch = builder().withWeightKg(10.0)
+                                             .withType(Material.DELICATE)
+                                             .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.SHORT)
+                                                                        .withSpin(true)
+                                                                        .build();
+        LaundryStatus laundryStatus = washingMachine.start(laundryBatch, programConfiguration );
+
+        Assert.assertThat(laundryStatus.getResult(), is(Result.FAILURE));
+    }
+
 }
