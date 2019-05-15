@@ -104,6 +104,20 @@ public class WashingMachineTest {
         Assert.assertThat(laundryStatus.getRunnedProgram(), is(Program.MEDIUM));
     }
 
+    @Test public void oneCallstartShouldPourOnce() {
+        when(dirtDetector.detectDirtDegree(any())).thenReturn(new Percentage(30.0d));
+        LaundryBatch laundryBatch = builder().withWeightKg(5.0)
+                                             .withType(Material.DELICATE)
+                                             .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.AUTODETECT)
+                                                                        .withSpin(true)
+                                                                        .build();
+        LaundryStatus laundryStatus = washingMachine.start(laundryBatch, programConfiguration );
+
+        verify(waterPump, times(1)).pour(laundryBatch.getWeightKg());
+    }
+
 
 
 
