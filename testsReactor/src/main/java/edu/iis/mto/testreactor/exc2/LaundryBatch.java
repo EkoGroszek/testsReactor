@@ -12,6 +12,8 @@ public class LaundryBatch {
         this.type = Objects.requireNonNull(builder.type, "type == null");
     }
 
+
+
     public double getWeightKg() {
         return weightKg;
     }
