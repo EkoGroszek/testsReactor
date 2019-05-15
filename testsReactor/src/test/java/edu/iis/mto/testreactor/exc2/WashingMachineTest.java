@@ -8,7 +8,7 @@ import org.junit.Test;
 import static edu.iis.mto.testreactor.exc2.LaundryBatch.builder;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 public class WashingMachineTest {
 
@@ -62,5 +62,22 @@ public class WashingMachineTest {
 
         Assert.assertThat(laundryStatus.getResult(), is(Result.FAILURE));
     }
+
+    @Test public void weightBelowMaxWeightShouldSetResultAsSUCCESS() {
+        LaundryBatch laundryBatch = builder().withWeightKg(5.0)
+                                             .withType(Material.DELICATE)
+                                             .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.SHORT)
+                                                                        .withSpin(true)
+                                                                        .build();
+        LaundryStatus laundryStatus = washingMachine.start(laundryBatch, programConfiguration );
+
+        Assert.assertThat(laundryStatus.getResult(), is(Result.SUCCESS));
+    }
+
+
+
+
 
 }
