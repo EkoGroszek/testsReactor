@@ -76,6 +76,20 @@ public class WashingMachineTest {
         Assert.assertThat(laundryStatus.getResult(), is(Result.SUCCESS));
     }
 
+    @Test public void dirtyOver40PercentShouldRunProgramLONG() {
+        when(dirtDetector.detectDirtDegree(any())).thenReturn(new Percentage(50.0d));
+        LaundryBatch laundryBatch = builder().withWeightKg(5.0)
+                                             .withType(Material.DELICATE)
+                                             .build();
+        ProgramConfiguration programConfiguration = ProgramConfiguration.builder()
+                                                                        .withProgram(Program.AUTODETECT)
+                                                                        .withSpin(true)
+                                                                        .build();
+        LaundryStatus laundryStatus = washingMachine.start(laundryBatch, programConfiguration );
+
+        Assert.assertThat(laundryStatus.getRunnedProgram(), is(Program.LONG));
+    }
+
 
 
 
